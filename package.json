@@ -19,9 +19,11 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@mendable/firecrawl-js": "^1.25.5",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
+    "@nestjs/passport": "^11.0.0",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/typeorm": "^11.0.0",
     "axios": "^1.10.0",
@@ -29,13 +31,12 @@
     "class-validator": "^0.14.2",
     "dotenv": "^16.5.0",
     "multer": "^2.0.1",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
     "pg": "^8.16.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
-    "typeorm": "^0.3.24",
-    "@nestjs/passport": "^11.0.0",
-    "passport": "^0.7.0",
-    "passport-jwt": "^4.0.1"
+    "typeorm": "^0.3.24"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
