@@ -1,7 +1,7 @@
-import { isString } from "class-validator"
+import { IsString, isString } from "class-validator"
 
 
 export class SummarizerDTO {
-    @isString()
+    @IsString()
     text: string;
 }
