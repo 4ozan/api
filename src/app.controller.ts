@@ -28,7 +28,7 @@ export class AppController {
     return { answer };
   }
 
-@Get()
+@Get('status')
 getStatus(): string {
   return this.appService.getStatus();
 }
