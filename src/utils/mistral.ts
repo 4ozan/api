@@ -21,9 +21,27 @@ export const MistralClient = {
     );
 
     const rawText = res.data.choices[0].message.content;
-    return rawText
-      .split('\n')
-      .filter(line => line.trim())
-      .slice(0, 4); 
+    return rawText.split('\n').filter(Boolean);
   },
+
+  async chatWithSystemPrompt(systemPrompt: string, userPrompt: string): Promise<string> {
+    const res = await axios.post(
+      'https://api.mistral.ai/v1/chat/completions',
+      {
+        model: 'mistral-medium',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt }
+        ],
+        temperature: 0.7,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.MISTRAL_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return res.data.choices[0].message.content;
+  }
 };

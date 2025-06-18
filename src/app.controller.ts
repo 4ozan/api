@@ -1,13 +1,10 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { AppService } from './app.service';
-import { MistralClient } from './utils/mistral';
 import { chatWithSamBlog } from './utils/scrape';
-
-class SummarizeDto {
-  text: string;
-}
+import { IsString } from 'class-validator';
 
 class ChatBlogDto {
+  @IsString()
   prompt: string;
 }
 
@@ -15,22 +12,37 @@ class ChatBlogDto {
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-
-  @Post('summarize')
-  async summarize(@Body() body: SummarizeDto) {
-    const slides = await MistralClient.summarizeToSlides(body.text);
-    return { slides };
-  }
-
-  @Post('chat-sama')
+  @Post('sama')
   async chatBlog(@Body() body: ChatBlogDto) {
-    const answer = await chatWithSamBlog(body.prompt);
-    return { answer };
+    console.log('Received POST /sama with body:', body);
+    try {
+      const { prompt } = body;
+
+      if (!prompt) {
+        console.log('No prompt provided');
+        return { error: 'Prompt is required.' };
+      }
+
+      if (!process.env.MISTRAL_API_KEY || !process.env.FIRECRAWL_API_KEY) {
+        console.log('API keys missing:', {
+          MISTRAL_API_KEY: !!process.env.MISTRAL_API_KEY,
+          FIRECRAWL_API_KEY: !!process.env.FIRECRAWL_API_KEY,
+        });
+        return { error: 'API keys are missing from environment variables.' };
+      }
+
+      console.log('Calling chatWithSamBlog with prompt:', prompt);
+      const answer = await chatWithSamBlog(prompt);
+      console.log('Received answer from chatWithSamBlog:', answer);
+      return { answer };
+    } catch (error) {
+      console.error('Error in /sama:', error);
+      return { error: error?.message || 'An unknown error occurred.' };
+    }
   }
 
-@Get('status')
-getStatus(): string {
-  return this.appService.getStatus();
-}
-
+  @Get('status')
+  getStatus(): string {
+    return this.appService.getStatus();
+  }
 }
