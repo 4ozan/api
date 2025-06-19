@@ -3,10 +3,6 @@ import axios from 'axios';
 
 @Injectable()
 export class AppService {
-  getStatus(): string {
-    return 'Server is active';
-  }
-
   async chatWithSystemPrompt(systemPrompt: string, userPrompt: string): Promise<string[]> {
     const res = await axios.post(
       'https://api.mistral.ai/v1/chat/completions',
@@ -25,7 +21,7 @@ export class AppService {
         },
       }
     );
-    
+
     return res.data.choices.map((choice: any) => choice.message.content);
   }
 
@@ -34,4 +30,3 @@ export class AppService {
     return this.chatWithSystemPrompt(systemPrompt, userPrompt);
   }
 }
-
