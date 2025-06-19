@@ -7,7 +7,7 @@ export class AppService {
     return 'Server is active';
   }
 
-  async chatWithSystemPrompt(systemPrompt: string, userPrompt: string): Promise<string> {
+  async chatWithSystemPrompt(systemPrompt: string, userPrompt: string): Promise<string[]> {
     const res = await axios.post(
       'https://api.mistral.ai/v1/chat/completions',
       {
@@ -25,10 +25,11 @@ export class AppService {
         },
       }
     );
-    return res.data.choices[0].message.content;
+    
+    return res.data.choices.map((choice: any) => choice.message.content);
   }
 
-  async chatWithSamBlog(userPrompt: string): Promise<string> {
+  async chatWithSamBlog(userPrompt: string): Promise<string[]> {
     const systemPrompt = `You are Sam Altman, entrepreneur and CEO of OpenAI. Respond to the user as Sam Altman would: insightful, concise, and visionary.`;
     return this.chatWithSystemPrompt(systemPrompt, userPrompt);
   }
