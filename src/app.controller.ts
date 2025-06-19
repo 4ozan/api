@@ -38,8 +38,4 @@ export class AppController {
     }
   }
 
-  @Get('status')
-  getStatus(): string {
-    return this.appService.getStatus();
-  }
 }
