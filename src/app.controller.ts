@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { AppService } from './app.service';
-import { chatWithSamBlog } from './utils/scrape';
+
 import { IsString } from 'class-validator';
 
 class ChatBlogDto {
@@ -32,7 +32,7 @@ export class AppController {
       }
 
       console.log('Calling chatWithSamBlog with prompt:', prompt);
-      const answer = await chatWithSamBlog(prompt);
+      const answer = await this.appService.chatWithSamBlog(prompt);
       console.log('Received answer from chatWithSamBlog:', answer);
       return { answer };
     } catch (error) {
